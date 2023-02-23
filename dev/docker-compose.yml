@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres
+    network_mode: host
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: 2023-02-20-12-api-express-simples
+    volumes:
+      - "./database:/docker-entrypoint-initdb.d"
+  dev:
+    build:
+      context: ..
+      dockerfile: dockerfile.dev
+    user: node
+    container_name: 2023-02-20-12-api-express-simples
+    entrypoint: /bin/bash
+    tty: true
+    stdin_open: true
+    network_mode: host
+    volumes:
+      - ../:/app:rw

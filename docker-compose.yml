@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: dockerfile
+    user: node
+    container_name: 2023-02-20-12-api-express-simples-prod
+    entrypoint: /bin/bash
+    tty: true
+    stdin_open: true
+    network_mode: host
+    volumes:
+      - ../:/app:rw
