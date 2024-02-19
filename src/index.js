@@ -29,11 +29,11 @@ app.listen(port, () => {
 })
 
 // ====== Configurando conexão na base de dados ======
-const DATABSE_USER = process.env.DATABSE_USER || "postgres"
-const DATABSE_PASS = process.env.DATABSE_PASS || "Ba5Ag1-6E*Bd4A2EE3-Cf524eFgG***-"
-const DATABSE_HOST = process.env.DATABSE_HOST || "viaduct.proxy.rlwy.net"
-const DATABSE_PORT = process.env.DATABSE_PORT || "23565"
-const DATABSE_NAME = process.env.DATABSE_NAME || "railway"
+const DATABSE_USER = process.env.DATABSE_USER
+const DATABSE_PASS = process.env.DATABSE_PASS
+const DATABSE_HOST = process.env.DATABSE_HOST
+const DATABSE_PORT = process.env.DATABSE_PORT
+const DATABSE_NAME = process.env.DATABSE_NAME
 
 const URL = `postgres://${DATABSE_USER}:${DATABSE_PASS}@${DATABSE_HOST}:${DATABSE_PORT}/${DATABSE_NAME}`
 const sequelize = new Sequelize(
