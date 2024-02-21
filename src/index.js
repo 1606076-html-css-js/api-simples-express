@@ -10,12 +10,6 @@
     https://sequelize.org/docs/v6/core-concepts/raw-queries/
 */
 
-
-escreva()
-leia()
-
-
-
 // Imports
 const express = require('express')
 const cors = require('cors')
