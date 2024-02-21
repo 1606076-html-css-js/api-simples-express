@@ -10,6 +10,12 @@
     https://sequelize.org/docs/v6/core-concepts/raw-queries/
 */
 
+
+escreva()
+leia()
+
+
+
 // Imports
 const express = require('express')
 const cors = require('cors')
@@ -29,11 +35,11 @@ app.listen(port, () => {
 })
 
 // ====== Configurando conexão na base de dados ======
-const DATABSE_USER = process.env.DATABSE_USER
-const DATABSE_PASS = process.env.DATABSE_PASS
-const DATABSE_HOST = process.env.DATABSE_HOST
-const DATABSE_PORT = process.env.DATABSE_PORT
-const DATABSE_NAME = process.env.DATABSE_NAME
+const DATABSE_USER = process.env.DATABSE_USER || 'postgres'
+const DATABSE_PASS = process.env.DATABSE_PASS || 'postgres'
+const DATABSE_HOST = process.env.DATABSE_HOST || 'localhost'
+const DATABSE_PORT = process.env.DATABSE_PORT || 5432
+const DATABSE_NAME = process.env.DATABSE_NAME || 'livraria'
 
 const URL = `postgres://${DATABSE_USER}:${DATABSE_PASS}@${DATABSE_HOST}:${DATABSE_PORT}/${DATABSE_NAME}`
 const sequelize = new Sequelize(
@@ -66,6 +72,11 @@ app.post('/generica', (req, res) => {
         })
 })
 
+
+/*
+    Documentação de listagem de livros:
+    Voce deve enviar um GET para https://api-aula.up.railway.app/livros
+*/
 // Endpoint 'minhaapi.com/livros', GET para mostrar todos os livros
 app.get('/livros', async (req, res) => {
     const result = await sequelize.query(
@@ -75,6 +86,11 @@ app.get('/livros', async (req, res) => {
     return res.json(result)
 })
 
+/*
+    Documentação de cadastro de livros:
+    Voce deve enviar um POST para https://api-aula.up.railway.app/livros
+    E no corpo da requisição, enviar um JSON com os campos title e description
+*/
 // Endpoint 'minhaapi.com/livros', POST para cadastrar novo livro
 app.post('/livros', async (req, res) => {
     if (!req.body.title) {
@@ -96,6 +112,40 @@ app.post('/livros', async (req, res) => {
 app.delete('/livros', async (req, res) => {
     await sequelize.query(
         `DELETE FROM livros;`,
+        { type: QueryTypes.DELETE }
+    );
+
+    return res.status(200).json("Todos os valores na base de dados foram DELETADOS!")
+})
+
+
+app.get('/jogadores', async (req, res) => {
+    const result = await sequelize.query(
+        'SELECT * FROM jogadores',
+        { type: QueryTypes.SELECT }
+    );
+    return res.json(result)
+})
+
+app.post('/jogadores', async (req, res) => {
+    if (!req.body.nome) {
+        return res.status(400).json(`Nome é obrigatório!`)
+    }
+
+    await sequelize.query(
+        `INSERT INTO jogadores
+            (nome, idade)
+        VALUES
+            ('${req.body.nome}', '${req.body.idade}')`,
+        { type: QueryTypes.INSERT }
+    );
+
+    return res.status(201).json(`Você cadastrou o jogador ${req.body.nome}`)
+})
+
+app.delete('/jogadores', async (req, res) => {
+    await sequelize.query(
+        `DELETE FROM jogadores;`,
         { type: QueryTypes.DELETE }
     );
 
